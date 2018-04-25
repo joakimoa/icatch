@@ -16,11 +16,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".MusicService"  android:enabled="true">
-        </service>
+
+        <service
+            android:name=".MusicService"
+            android:enabled="true" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <activity
+            android:name=".InstructionsActivity"
+            android:label="@string/title_activity_instructions"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".BackstoryActivity"
+            android:label="@string/title_activity_backstory"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".GameActivity"
+            android:label="@string/title_activity_game"></activity>
     </application>
 
 </manifest>
