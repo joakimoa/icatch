@@ -34,7 +34,7 @@
         android:id="@+id/compassImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@mipmap/ic_launcher_round"
+        app:srcCompat="@drawable/ic_arrow_upward_black_24dp"
         tools:layout_editor_absoluteX="156dp"
         tools:layout_editor_absoluteY="247dp" />
 
