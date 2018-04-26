@@ -1,5 +1,6 @@
 package com.absolutapp.icatch;
 
+import android.app.DialogFragment;
 import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
@@ -47,6 +48,16 @@ public class GameActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         compass = (ImageView) findViewById(R.id.compassImageView);
+
+        // story dialog popup
+        DialogFragment dialog = new StoryDialog();
+        Bundle args = new Bundle();
+        //args.putString(YesNoDialog.ARG_TITLE, title);
+        //args.putString(YesNoDialog.ARG_MESSAGE, message);
+        int yesno = 0;
+        dialog.setArguments(args);
+        //dialog.setTargetFragment(this, yesno);
+        dialog.show(getFragmentManager(), "tag");
 
     }
 
