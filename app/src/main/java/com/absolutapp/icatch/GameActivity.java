@@ -2,6 +2,7 @@ package com.absolutapp.icatch;
 
 import android.app.DialogFragment;
 import android.graphics.Color;
+import android.location.Location;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +17,8 @@ public class GameActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
     private ImageView compass;
+    private GPS gps;
+    private ArrowCalculator arrowCalculator;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -28,12 +31,22 @@ public class GameActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_dashboard:
                     mTextMessage.setText(R.string.title_dashboard);
-                    rotateArrow(90);
+                 //   rotateArrow(90);
+                    rotateArrow(arrowCalculator.getDirection());
+                    mTextMessage.setText(((Float)arrowCalculator.getDistance()).toString());
                     return true;
                 case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
+                    //mTextMessage.setText(R.string.title_notifications);
                     colorArrow(60);
 
+                    Location myLocation = arrowCalculator.getMyLocation();
+                    if(myLocation != null) {
+                        mTextMessage.setText("Lat: " + myLocation.getLatitude() + " Long: " + myLocation.getLongitude());
+
+                    }
+                    else{
+                        mTextMessage.setText("No known location");
+                    }
                     return true;
             }
             return false;
@@ -58,6 +71,12 @@ public class GameActivity extends AppCompatActivity {
         dialog.setArguments(args);
         //dialog.setTargetFragment(this, yesno);
         dialog.show(getFragmentManager(), "tag");
+
+        gps = new GPS(this);
+        Location SjonSjon = new Location("");
+        SjonSjon.setLongitude(13.208543d);
+        SjonSjon.setLatitude(55.710605d);
+        arrowCalculator = new ArrowCalculator(gps, SjonSjon);
 
     }
 
