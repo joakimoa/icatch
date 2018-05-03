@@ -41,4 +41,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_arrow_upward_black_24dp" />
 
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteX="279dp"
+        tools:layout_editor_absoluteY="434dp" />
+
 </android.support.constraint.ConstraintLayout>
