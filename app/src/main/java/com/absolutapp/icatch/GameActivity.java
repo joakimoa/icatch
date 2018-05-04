@@ -30,8 +30,8 @@ public class GameActivity extends AppCompatActivity {
     private ImageView compass;
     private GPS gps;
     private ArrowCalculator arrowCalculator;
-    // private Location my
-
+    private Location myLocation = null;
+    private Location SjonSjon;
 //    private MapView mapView;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -46,21 +46,21 @@ public class GameActivity extends AppCompatActivity {
                 case R.id.navigation_dashboard:
                     mTextMessage.setText(R.string.title_dashboard);
                     //   rotateArrow(90);
-                    rotateArrow(arrowCalculator.getDirection());
-                    mTextMessage.setText(((Float) arrowCalculator.getDistance()).toString());
+                    //rotateArrow(90);
+                    //mTextMessage.setText(((Float) arrowCalculator.getDistance()).toString());
                     return true;
                 case R.id.navigation_notifications:
                     //mTextMessage.setText(R.string.title_notifications);
                     colorArrow(60);
 
-                    Location myLocation = arrowCalculator.getMyLocation();
+                   // Location myLocation = arrowCalculator.getMyLocation();
                  //   if (myLocation != null) {
                    //     mTextMessage.setText("Lat: " + myLocation.getLatitude() + " Long: " + myLocation.getLongitude());
 //
   //                  } else {
      //                   mTextMessage.setText("No known location");
        //             }
-                        gps();
+
                     return true;
             }
             return false;
@@ -87,18 +87,21 @@ public class GameActivity extends AppCompatActivity {
         //dialog.setTargetFragment(this, yesno);
         dialog.show(getFragmentManager(), "tag");
 
-        gps = new GPS(this);
-        Location SjonSjon = new Location("");
+        //gps = new GPS(this);
+
+        gps();
+        SjonSjon = new Location("");
         SjonSjon.setLongitude(13.208543d);
         SjonSjon.setLatitude(55.710605d);
-        arrowCalculator = new ArrowCalculator(gps, SjonSjon);
+        arrowCalculator = new ArrowCalculator(SjonSjon);
+
 
     }
 
 
     protected void rotateArrow(float deg) {
-        compass.setRotation(compass.getRotation() + deg);
-
+        //compass.setRotation(compass.getRotation() + deg);
+        compass.setRotation(deg);
     }
 
     /**Sets cclor from red = 0 to green = 100*/
@@ -113,13 +116,24 @@ public class GameActivity extends AppCompatActivity {
     private LocationManager locationManager;
     private LocationListener locationListener;
 
+    private String getLatLong(Location location){
+        return "Lat: " + location.getLatitude() + " Long: " + location.getLongitude();
+    }
+
+    private String getRelativeLatLong(Location location){
+        return " Relative lat: " + (location.getLatitude()-SjonSjon.getLatitude()) + " relative long: " + (location.getLongitude()-SjonSjon.getLongitude());
+     }
+
     private void gps() {
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 //we want
-                mTextMessage.setText("Lat: " + location.getLatitude() + " Long: " + location.getLongitude());
+                mTextMessage.setText(getLatLong(location) + getRelativeLatLong(location) + " direction " + arrowCalculator.getDirection(location));
+               // rotateArrow(arrowCalculator.getDirection(myLocation));
+                rotateArrow(arrowCalculator.getDirection(location));
+                colorArrow(arrowCalculator.getDistance(myLocation));
             }
 
             @Override
@@ -157,16 +171,16 @@ public class GameActivity extends AppCompatActivity {
                     // for ActivityCompat#requestPermissions for more details.
                     return;
                 }
-        }else {
+        }//else {
                  startGPS();
-        }
+        //}
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch(requestCode){
             case 10:
-                if ((grantResults.length>0) &&   grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if ((grantResults.length>0) && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                     startGPS();
                 }
                 return;
