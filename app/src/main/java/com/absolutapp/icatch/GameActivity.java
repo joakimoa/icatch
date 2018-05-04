@@ -3,8 +3,13 @@ package com.absolutapp.icatch;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -14,6 +19,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -24,7 +30,7 @@ import android.support.v4.graphics.ColorUtils;
 
 import com.google.android.gms.maps.MapView;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity implements SensorEventListener{
 
     private TextView mTextMessage;
     private ImageView compass;
@@ -32,6 +38,9 @@ public class GameActivity extends AppCompatActivity {
     private ArrowCalculator arrowCalculator;
     private Location myLocation = null;
     private Location SjonSjon;
+//    private int northDir = 0;
+    private float dirRelativeNorth = 0;
+
 //    private MapView mapView;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -95,8 +104,12 @@ public class GameActivity extends AppCompatActivity {
         SjonSjon.setLatitude(55.710605d);
         arrowCalculator = new ArrowCalculator(SjonSjon);
 
+        onCreateCompass();
+
+
 
     }
+
 
 
     protected void rotateArrow(float deg) {
@@ -132,7 +145,8 @@ public class GameActivity extends AppCompatActivity {
                 //we want
                 mTextMessage.setText(getLatLong(location) + getRelativeLatLong(location) + " direction " + arrowCalculator.getDirection(location));
                // rotateArrow(arrowCalculator.getDirection(myLocation));
-                rotateArrow(arrowCalculator.getDirection(location));
+             //   rotateArrow(arrowCalculator.getDirection(location));
+                dirRelativeNorth = arrowCalculator.getDirection(location);
                 colorArrow(arrowCalculator.getDistance(myLocation));
             }
 
@@ -192,6 +206,194 @@ public class GameActivity extends AppCompatActivity {
     private void startGPS(){
         locationManager.requestLocationUpdates("gps", 200, 0, locationListener);
     }
+
+
+
+/** From compass*/
+private SensorManager mSensorManager;
+    private Sensor mRotationV, mAccelerometer, mMagnetometer;
+    boolean haveSensor = false, haveSensor2 = false;
+    float[] rMat = new float[9];
+    float[] orientation = new float[3];
+    private float[] mLastAccelerometer = new float[3];
+    private float[] mLastMagnetometer = new float[3];
+    private boolean mLastAccelerometerSet = false;
+    private boolean mLastMagnetometerSet = false;
+    int mAzimuth;
+
+
+
+
+
+
+
+    private void onCreateCompass() {
+        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+
+
+    }
+
+
+    private void start() {
+        if (mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR) == null) {
+            if ((mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) == null) || (mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD) == null)) {
+                noSensorsAlert();
+            }
+            else {
+                mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+                mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+                haveSensor = mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
+                haveSensor2 = mSensorManager.registerListener(this, mMagnetometer, SensorManager.SENSOR_DELAY_UI);
+            }
+        }
+        else{
+            mRotationV = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+            haveSensor = mSensorManager.registerListener(this, mRotationV, SensorManager.SENSOR_DELAY_UI);
+        }
+    }
+
+    private void noSensorsAlert() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setMessage("Your device doesn't support the Compass.")
+                .setCancelable(false)
+                .setNegativeButton("Close",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finish();
+                    }
+                });
+        alertDialog.show();
+    }
+
+
+    public void stop() {
+        if(haveSensor && haveSensor2){
+            mSensorManager.unregisterListener(this,mAccelerometer);
+            mSensorManager.unregisterListener(this,mMagnetometer);
+        }
+        else{
+            if(haveSensor)
+                mSensorManager.unregisterListener(this,mRotationV);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        start();
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR) {
+            SensorManager.getRotationMatrixFromVector(rMat, event.values);
+            mAzimuth = (int) (Math.toDegrees(SensorManager.getOrientation(rMat, orientation)[0]) + 360) % 360;
+        }
+
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            System.arraycopy(event.values, 0, mLastAccelerometer, 0, event.values.length);
+            mLastAccelerometerSet = true;
+        } else if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+            System.arraycopy(event.values, 0, mLastMagnetometer, 0, event.values.length);
+            mLastMagnetometerSet = true;
+        }
+        if (mLastAccelerometerSet && mLastMagnetometerSet) {
+            SensorManager.getRotationMatrix(rMat, null, mLastAccelerometer, mLastMagnetometer);
+            SensorManager.getOrientation(rMat, orientation);
+            mAzimuth = (int) (Math.toDegrees(SensorManager.getOrientation(rMat, orientation)[0]) + 360) % 360;
+        }
+
+        mAzimuth = Math.round(mAzimuth);
+     //   compass_img.setRotation(-mAzimuth);
+        //northDir = -mAzimuth;
+        setNorth(-mAzimuth);
+//        String where = "NW";
+//
+//        if (mAzimuth >= 350 || mAzimuth <= 10) {
+//            where = "N";
+//            //if (vibrator.hasVibrator()){
+//              //  vibrator.vibrate(10);
+//           // }
+//        }
+//        else if (mAzimuth < 350 && mAzimuth > 280)
+//            where = "NW";
+//        else if (mAzimuth <= 280 && mAzimuth > 260)
+//            where = "W";
+//        else if (mAzimuth <= 260 && mAzimuth > 190)
+//            where = "SW";
+//        else if (mAzimuth <= 190 && mAzimuth > 170)
+//            where = "S";
+//        else if (mAzimuth <= 170 && mAzimuth > 100)
+//            where = "SE";
+//        else if (mAzimuth <= 100 && mAzimuth > 80)
+//            where = "E";
+//        else if (mAzimuth <= 80 && mAzimuth > 10)
+//            where = "NE";
+//
+//
+//        txt_compass.setText(mAzimuth + "° " + where);
+    }
+
+    private void setNorth(int north) {
+        rotateArrow(north + dirRelativeNorth);
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
+
 
 
