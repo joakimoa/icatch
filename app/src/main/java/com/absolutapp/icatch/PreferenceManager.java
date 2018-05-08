@@ -39,7 +39,7 @@ public class PreferenceManager {
     }
 
     /**
-     * Checks if the app has been opened before and changes the preferences accordinlgy
+     * Checks if the app has been opened before and changes the preferences accordingly
      * @return
      */
     public boolean checkPreference()
