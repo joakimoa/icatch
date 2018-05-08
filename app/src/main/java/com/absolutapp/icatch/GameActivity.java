@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.hardware.Sensor;
@@ -87,15 +88,15 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         compass = (ImageView) findViewById(R.id.compassImageView);
 
         // story dialog popup
-        DialogFragment dialog = new StoryDialog();
+        // DialogFragment dialog = new StoryDialog();
         Bundle args = new Bundle();
         //args.putString(YesNoDialog.ARG_TITLE, title);
         //args.putString(YesNoDialog.ARG_MESSAGE, message);
         int yesno = 0;
-        dialog.setArguments(args);
+     //   dialog.setArguments(args);
         //dialog.setTargetFragment(this, yesno);
-        dialog.show(getFragmentManager(), "tag");
-
+       // dialog.show(getFragmentManager(), "tag");
+        startActivity(new Intent(this, StoryDialog.class));
         //gps = new GPS(this);
 
         gps();

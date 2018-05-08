@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">iCatch</string>
-    <string name="title_activity_instructions">InstructionsActivity</string>
+    <string name="title_activity_instructions">iCatch</string>
     <string name="title_activity_backstory">BackstoryActivity</string>
     <string name="title_activity_game">GameActivity</string>
     <string name="title_home">Home</string>

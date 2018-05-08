@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff55250"
+    android:elevation="10dp"
+    >
+
+    <TextView
+        android:id="@+id/bgStory"
+        android:layout_width="320dp"
+        android:layout_height="294dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Efter fredagens läskiga händelse på dansgolvet på Västgöta Nation så har Lund inte varit sig likt. En student från datateknik blev biten i handen av en KTH:are på besök, och lundensaren blev smittad av ett icke identifierbart virus genom bettet. Viruset har fortsatt sprida sig och flertalet människor rapporteras genomgå personlighetsförändringar. Detta har nu resulterat i att ett gäng rabiata datateknikstudenter har gått bärsärkagång i Botaniska Trädgården och förstört flera vackra växter. KTH-viruset verkar sprida sig som en löpeld och hela Lunds vegetation står på spel. Det är upp till dig att rädda dagen... "
+        android:textSize="18sp"
+        android:maxLines = "15"
+        android:scrollbars = "vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>
