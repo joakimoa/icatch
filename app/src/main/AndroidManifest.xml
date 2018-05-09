@@ -51,6 +51,10 @@
         <activity android:name=".StoryDialog"
             android:theme="@style/AppTheme.customTheme">
         </activity>
+        <activity
+            android:name=".MainAccelerometer"
+            android:label="MainAccelerometer" >
+        </activity>
     </application>
 
 </manifest>
