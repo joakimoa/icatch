@@ -9,21 +9,31 @@
 
 
     <!-- slide 1 title and descr -->
-    <string name="slide_1_title">Title 1</string>
-    <string name="slide_1_desc">Description 1</string>
+    <string name="slide_1_title">Spelets mål</string>
+    <string name="slide_1_desc">Ett virus har spridit sig i Lund och ditt mål är att sprida ett motgift för att ta död på denna farsot.
+    Det finns tre zoner man måste eliminera viruset på - på bilden kan du se hur man väljer mellan de tre zonerna.</string>
 
     <!-- slide 2 title and descr -->
-    <string name="slide_2_title">Title 2</string>
-    <string name="slide_2_desc">Description 2</string>
+    <string name="slide_2_title">Hur man vinner</string>
+    <string name="slide_2_desc">Man vinner när viruset är eliminerat på alla tre zoner samtidigt.
+    Ta dig snabbt till din valda zon och följ instruktionerna väl på plats för att sprida motgiftet!</string>
 
     <!-- slide 3 title and descr -->
-    <string name="slide_3_title">Title 3</string>
-    <string name="slide_3_desc">Description 3</string>
+    <string name="slide_3_title">Hur man förlorar</string>
+    <string name="slide_3_desc">Detta spel går på tid. På bilden kan ni se en timer över varje zon.
+    När timern når 100% så tänds en av lamporna ovanför zonen. Om tre lampor lyser samtidigt för en zon så förlorar man.</string>
 
     <!-- slide 4 title and descr -->
-    <string name="slide_4_title">Title 4</string>
-    <string name="slide_4_desc">Description 4</string>
+    <string name="slide_4_title">Hitta rätt</string>
+    <string name="slide_4_desc">Till din hjälp så har du en orienteringspil på skärmen.
+        Denna ändrar färg från röd till grön beroende på hur långt ifrån din valda zon du är.</string>
 
+    <!-- background story text -->
+    <string name="bgStory">Efter fredagens läskiga händelse på dansgolvet på Västgöta Nation så har Lund inte varit sig likt.
+        En student från datateknik blev biten i handen av en KTH:are på besök, och lundensaren blev smittad av ett icke identifierbart virus genom bettet.
+        Viruset har fortsatt sprida sig och flertalet människor rapporteras genomgå personlighetsförändringar.
+        Detta har nu resulterat i att ett gäng rabiata datateknikstudenter har gått bärsärkagång i Botaniska Trädgården och förstört flera vackra växter.
+        KTH-viruset verkar sprida sig som en löpeld och hela Lunds vegetation står på spel. Det är upp till dig att rädda dagen... </string>
     <string name="my_preference">"com.abc.com.MyPref</string>
     <string name="my_preference_key">"com.abc.com.MyPrefKey</string>
 

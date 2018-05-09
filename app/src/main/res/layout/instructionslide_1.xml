@@ -16,14 +16,14 @@
         android:gravity="center_horizontal"
         android:id="@+id/slide_title"
         />
-    
+
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:text="@string/slide_1_desc"
         android:layout_marginTop="200dp"
-        android:id="@+id/slide_desc"
-        android:textSize="17sp"
         android:textAlignment="center"
+        android:textSize="17sp"
+        android:layout_centerInParent="true"
         />
 </RelativeLayout>

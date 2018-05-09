@@ -24,6 +24,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -97,6 +99,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         //dialog.setTargetFragment(this, yesno);
        // dialog.show(getFragmentManager(), "tag");
         startActivity(new Intent(this, StoryDialog.class));
+
         //gps = new GPS(this);
 
         gps();
