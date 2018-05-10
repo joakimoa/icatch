@@ -48,6 +48,13 @@
             android:name=".GameActivity"
             android:label="@string/title_activity_game">
         </activity>
+        <activity android:name=".StoryDialog"
+            android:theme="@style/AppTheme.customTheme">
+        </activity>
+        <activity
+            android:name=".MainAccelerometer"
+            android:label="MainAccelerometer" >
+        </activity>
     </application>
 
 </manifest>

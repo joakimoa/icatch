@@ -1,52 +1,191 @@
 package com.absolutapp.icatch;
 
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
-public class InstructionsActivity extends AppCompatActivity {
+/**
+ * A class showing the how-to-play tutorial
+ */
+public class InstructionsActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private ViewPager mPager;
+    private int[] layouts = {
+        R.layout.instructionslide_1,
+        R.layout.instructionslide_2,
+        R.layout.instructionslide_3,
+        R.layout.instructionslide_4
+    };
+
+    private InstructionsAdapter adapter;
+    private LinearLayout Dots_Layout;
+    private ImageView[] dots;
+
+    private Button BnNext, BnSkip;
+
+    /**
+     * Created the view and all the components
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //checks if the user has opened the app before
+        if(new PreferenceManager(this).checkPreference())
+        {
+            loadHome();
+        }
+
+        if(Build.VERSION.SDK_INT >= 19)
+        {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+        else
+        {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+
         setContentView(R.layout.activity_instructions);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mPager = findViewById(R.id.viewPager);
+        adapter = new InstructionsAdapter(layouts, this);
+        mPager.setAdapter(adapter);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        Dots_Layout = findViewById(R.id.dotsLayout);
+        createDots(0);
 
-//        StoryDialog storyDialog = new StoryDialog();
-//        Dialog d = storyDialog.getDia();
-//        d.show();
+        BnNext = findViewById(R.id.bnNext);
+        BnSkip = findViewById(R.id.bnSkip);
+        BnNext.setOnClickListener(this);
+        BnSkip.setOnClickListener(this);
 
-//        DialogFragment dialog = new StoryDialog();
-//        Bundle args = new Bundle();
-//        //args.putString(YesNoDialog.ARG_TITLE, title);
-//        //args.putString(YesNoDialog.ARG_MESSAGE, message);
-//        int yesno = 0;
-//        dialog.setArguments(args);
-//        //dialog.setTargetFragment(this, yesno);
-//        dialog.show(getFragmentManager(), "tag");
+        /**
+         * Changes the layout of the buttons depending on what slide currently is showing
+         */
+        mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener(){
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            /**
+             * Decides the layout of the buttons
+             * @param position
+             */
+            @Override
+            public void onPageSelected(int position) {
+                createDots(position);
+                if(position==layouts.length-1)
+                {
+                    BnNext.setText("Start");
+                    BnSkip.setVisibility(View.INVISIBLE);
+                }
+                else
+                {
+                    BnNext.setText("Next");
+                    BnSkip.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
     }
 
-    public void goToGameActivity(View view) {
-        Intent intent = new Intent(this, GameActivity.class);
-        startActivity(intent);
+    /**
+     * Creates the slideshow-dots and highlights them depending on what page is currently active
+     * @param currentPosition
+     */
+    private void createDots(int currentPosition)
+    {
+        if(Dots_Layout != null)
+        {
+            Dots_Layout.removeAllViews();
+        }
+
+        dots = new ImageView[layouts.length];
+
+        for (int i = 0; i < layouts.length; i++)
+        {
+            dots[i] = new ImageView(this);
+            if(i==currentPosition)
+            {
+                dots[i].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.active_dots));
+            }
+            else
+            {
+                dots[i].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.default_dots));
+            }
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+
+            params.setMargins(4, 0, 4, 0);
+
+            Dots_Layout.addView(dots[i], params);
+        }
+    }
+
+    /**
+     * This function is called whenever the user clicks a button.
+     * Either changes slide or loads the main menu
+     * @param v
+     */
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId())
+        {
+            case R.id.bnNext:
+                loadNextSlide();
+                break;
+
+            case R.id.bnSkip:
+                loadHome();
+                new PreferenceManager(this).writePreference();
+                break;
+        }
+
 
     }
 
+    /**
+     * Loads the main menu
+     */
+    private void loadHome()
+    {
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
+
+    /**
+     * Loads the next slide
+     */
+    private void loadNextSlide()
+    {
+        int next_slide = mPager.getCurrentItem()+1;
+
+        if(next_slide < layouts.length)
+        {
+            mPager.setCurrentItem(next_slide);
+        }
+        else
+        {
+            loadHome();
+            new PreferenceManager(this).writePreference();
+        }
+    }
 }
