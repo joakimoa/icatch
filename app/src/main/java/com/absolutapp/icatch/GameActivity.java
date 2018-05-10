@@ -34,12 +34,13 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     private TextView mTextMessage;
     private ImageView compass;
-    private GPS gps;
+   // private GPS gps;
     private ArrowCalculator arrowCalculator;
     private Location myLocation = null;
     private Location SjonSjon;
 //    private int northDir = 0;
     private float dirRelativeNorth = 0;
+    private boolean debug = false;
 
 //    private MapView mapView;
 
@@ -54,9 +55,11 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
                     return true;
                 case R.id.navigation_dashboard:
                     mTextMessage.setText(R.string.title_dashboard);
+
                     //   rotateArrow(90);
                     //rotateArrow(90);
                     //mTextMessage.setText(((Float) arrowCalculator.getDistance()).toString());
+                    debug = false;
                     return true;
                 case R.id.navigation_notifications:
                     //mTextMessage.setText(R.string.title_notifications);
@@ -69,6 +72,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
   //                  } else {
      //                   mTextMessage.setText("No known location");
        //             }
+                    debug = true;
 
                     return true;
             }
@@ -143,6 +147,12 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
             @Override
             public void onLocationChanged(Location location) {
                 //we want
+                if(debug) {
+                    mTextMessage.setText(getLatLong(location) + getRelativeLatLong(location) + " direction " + arrowCalculator.getDirection(location));
+                } else{
+                    mTextMessage.setText(((Float)arrowCalculator.getDistance(myLocation)).toString());
+                }
+                /// / rotateArrow(arrowCalculator.getDirection(myLocation));
                 mTextMessage.setText(getLatLong(location) + getRelativeLatLong(location) + " direction " + arrowCalculator.getDirection(location));
                // rotateArrow(arrowCalculator.getDirection(myLocation));
              //   rotateArrow(arrowCalculator.getDirection(location));
