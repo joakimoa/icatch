@@ -6,9 +6,10 @@ package com.absolutapp.icatch;
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import static android.os.SystemClock.sleep;
 
 public class MainAccelerometer extends Activity implements AccelerometerListener{
     public int [] imageArray = {R.drawable.pill0, R.drawable.pill05,
@@ -17,7 +18,7 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
             R.drawable.pill3, R.drawable.pill35,
             R.drawable.pill4, R.drawable.pill45,
             R.drawable.pill5};
-    public int pillcount = 9;
+    public int pillcount = 10;
     public ImageView imageview2;
 
 
@@ -26,7 +27,7 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.accelerometer_example_main);
         imageview2 = findViewById(R.id.imageView2);
-        imageview2.setImageResource(imageArray[9]);
+        imageview2.setImageResource(imageArray[10]);
 
         // Check onResume Method to start accelerometer listener
     }
@@ -37,12 +38,14 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
     }
 
     public void onShake(float force) {
-        // Do your stuff here
-
-        // Called when Motion Detected
-        Toast.makeText(getBaseContext(), "Motion detected",
-                Toast.LENGTH_SHORT).show();
-
+        if(pillcount >= 0){
+            imageview2.setImageResource(imageArray[pillcount]);
+            pillcount--;
+        } else {
+            // Called when Motion Detected
+            Toast.makeText(getBaseContext(), "Grattis! Zon botad",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

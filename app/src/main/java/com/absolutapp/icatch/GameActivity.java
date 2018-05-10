@@ -352,51 +352,10 @@ private SensorManager mSensorManager;
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public void testFramme(View view) {
+        startActivity(new Intent(this, MainAccelerometer.class));
+        finish();
+    }
 }
 
 

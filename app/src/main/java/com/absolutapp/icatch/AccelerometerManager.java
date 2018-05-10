@@ -19,7 +19,7 @@ public class AccelerometerManager {
 
     /** Accuracy configuration */
     private static float threshold  = 15.0f;
-    private static int interval     = 100;
+    private static int interval     = 200000000;
 
     private static Sensor sensor;
     private static SensorManager sensorManager;
@@ -112,7 +112,7 @@ public class AccelerometerManager {
             // Register Accelerometer Listener
             running = sensorManager.registerListener(
                     sensorEventListener, sensor,
-                    SensorManager.SENSOR_DELAY_GAME);
+                    SensorManager.SENSOR_DELAY_NORMAL);
 
             listener = accelerometerListener;
         }

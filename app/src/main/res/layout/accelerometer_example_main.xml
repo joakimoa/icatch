@@ -10,8 +10,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:text="Quick! Cure the infected! Shake Your Phone To Dispose Antidote" />
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:text="Snabbt!! Eliminera viruset!\n Skaka telefonen för att sprida motgiftet"
+        android:textSize="18sp" />
 
     <ImageView
         android:id="@+id/imageView2"
