@@ -5,6 +5,7 @@ package com.absolutapp.icatch;
  */
 import android.os.Bundle;
 import android.app.Activity;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -18,7 +19,7 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
             R.drawable.pill3, R.drawable.pill35,
             R.drawable.pill4, R.drawable.pill45,
             R.drawable.pill5};
-    public int pillcount = 10;
+    public int pillcount = 9;
     public ImageView imageview2;
 
 
@@ -38,9 +39,18 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
     }
 
     public void onShake(float force) {
-        if(pillcount >= 0){
+        if(pillcount > 0){
             imageview2.setImageResource(imageArray[pillcount]);
             pillcount--;
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    imageview2.setImageResource(imageArray[pillcount]);
+                    pillcount--;
+                }
+            }, 50);
+
+
         } else {
             // Called when Motion Detected
             Toast.makeText(getBaseContext(), "Grattis! Zon botad",
@@ -51,8 +61,6 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
     @Override
     public void onResume() {
         super.onResume();
-        Toast.makeText(getBaseContext(), "onResume Accelerometer Started",
-                Toast.LENGTH_SHORT).show();
 
         //Check device supported Accelerometer senssor or not
         if (AccelerometerManager.isSupported(this)) {
@@ -71,9 +79,7 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
 
             //Start Accelerometer Listening
             AccelerometerManager.stopListening();
-
-            Toast.makeText(getBaseContext(), "onStop Accelerometer Stoped",
-                    Toast.LENGTH_SHORT).show();
+            
         }
 
     }
