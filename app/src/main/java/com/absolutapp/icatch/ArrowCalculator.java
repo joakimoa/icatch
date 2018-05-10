@@ -32,9 +32,19 @@ public class ArrowCalculator {
     public float getDistance(Location myLocation){
         //Location me = my.getCurrentBest();
         if(myLocation == null){
-            return Float.MAX_VALUE;
+            return -1;//"No location";//Float.MAX_VALUE;
         }
         return  myLocation.distanceTo(goal);
+    }
+
+    public String getDistanceString(Location myLocation){
+        float d = getDistance(myLocation);
+        if(d<0){
+            return "No location";
+        }
+        else{
+            return Math.round(d) + " m";
+        }
     }
 
 

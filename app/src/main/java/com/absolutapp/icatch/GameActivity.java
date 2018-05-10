@@ -154,18 +154,19 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
                 if(debug) {
                     mTextMessage.setText(getLatLong(location) + getRelativeLatLong(location) + " direction " + arrowCalculator.getDirection(location));
                 } else{
-                    mTextMessage.setText(((Float)arrowCalculator.getDistance(myLocation)).toString());
+                    mTextMessage.setText(arrowCalculator.getDistanceString(location));
                 }
                 /// / rotateArrow(arrowCalculator.getDirection(myLocation));
-                mTextMessage.setText(getLatLong(location) + getRelativeLatLong(location) + " direction " + arrowCalculator.getDirection(location));
+               // mTextMessage.setText(getLatLong(location) + getRelativeLatLong(location) + " direction " + arrowCalculator.getDirection(location));
                // rotateArrow(arrowCalculator.getDirection(myLocation));
              //   rotateArrow(arrowCalculator.getDirection(location));
                 dirRelativeNorth = arrowCalculator.getDirection(location);
-                colorArrow(arrowCalculator.getDistance(myLocation));
+                colorArrow(arrowCalculator.getDistance(location));
             }
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
+
 
             }
 
