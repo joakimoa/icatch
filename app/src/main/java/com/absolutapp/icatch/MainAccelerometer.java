@@ -3,6 +3,7 @@ package com.absolutapp.icatch;
 /**
  * Created by Joakim on 2018-05-09.
  */
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.os.Handler;
@@ -40,6 +41,8 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
 
     public void onShake(float force) {
         if(pillcount > 0){
+            Intent soundServiceIntent = new Intent(getApplicationContext(), SoundService.class);
+            startService(soundServiceIntent);
             imageview2.setImageResource(imageArray[pillcount]);
             pillcount--;
             Handler handler = new Handler();
@@ -68,6 +71,8 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
             //Start Accelerometer Listening
             AccelerometerManager.startListening(this);
         }
+
+        stopService(new Intent(MainAccelerometer.this, SoundService.class));
     }
 
     @Override
@@ -82,6 +87,7 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
             
         }
 
+        stopService(new Intent(MainAccelerometer.this, SoundService.class));
     }
 
     @Override
@@ -99,6 +105,7 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
                     Toast.LENGTH_SHORT).show();
         }
 
+        stopService(new Intent(MainAccelerometer.this, SoundService.class));
     }
 
 }
