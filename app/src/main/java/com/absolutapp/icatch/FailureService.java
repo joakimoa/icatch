@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.IBinder;
 
-public class VictoryService extends Service {
+public class FailureService extends Service {
     MediaPlayer mp;
 
     @Override
@@ -13,7 +13,7 @@ public class VictoryService extends Service {
         return null;
     }
     public void onCreate() {
-        mp = MediaPlayer.create(this, R.raw.victory);
+        mp = MediaPlayer.create(this, R.raw.failure);
         mp.setLooping(false);
     }
 

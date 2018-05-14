@@ -37,4 +37,7 @@
     <string name="my_preference">"com.abc.com.MyPref</string>
     <string name="my_preference_key">"com.abc.com.MyPrefKey</string>
 
+    <string name="title_activity_losing_screen">LosingScreen</string>
+    <string name="return_button">Tillbaka till huvudmenyn</string>
+
 </resources>

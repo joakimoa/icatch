@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 
 /**
  * A class showing the how-to-play tutorial
+ * Built by following this guide: https://www.youtube.com/watch?v=wzh2vojv9m8&list=PLshdtb5UWjSoyfVybSD_sLVbT1w_CV2e5
  */
 public class InstructionsActivity extends AppCompatActivity implements View.OnClickListener {
 
