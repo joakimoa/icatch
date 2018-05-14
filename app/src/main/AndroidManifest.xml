@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.absolutapp.icatch">
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_GPS" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-feature android:name="android.hardware.location.gps" />
 
+    <uses-feature android:name="android.hardware.location.gps" />
 
     <application
         android:allowBackup="true"
@@ -18,9 +19,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
-
-        </activity>
+        <activity android:name=".MainActivity"></activity>
 
         <service
             android:name=".MusicService"
@@ -30,6 +29,9 @@
             android:enabled="true" />
         <service
             android:name=".VictoryService"
+            android:enabled="true" />
+        <service
+            android:name=".FailureService"
             android:enabled="true" />
 
         <meta-data
@@ -52,15 +54,17 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".GameActivity"
-            android:label="@string/title_activity_game">
-        </activity>
-        <activity android:name=".StoryDialog"
-            android:theme="@style/AppTheme.customTheme">
-        </activity>
+            android:label="@string/title_activity_game"></activity>
+        <activity
+            android:name=".StoryDialog"
+            android:theme="@style/AppTheme.customTheme"></activity>
         <activity
             android:name=".MainAccelerometer"
-            android:label="MainAccelerometer" >
-        </activity>
+            android:label="MainAccelerometer"></activity>
+        <activity
+            android:name=".LosingScreen"
+            android:label="LosingScreen"
+            ></activity>
     </application>
 
 </manifest>
