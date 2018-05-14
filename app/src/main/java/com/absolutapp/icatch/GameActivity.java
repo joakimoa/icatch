@@ -2,11 +2,9 @@ package com.absolutapp.icatch;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -14,7 +12,6 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,13 +22,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.support.v4.graphics.ColorUtils;
-
-import com.google.android.gms.maps.MapView;
 
 public class GameActivity extends AppCompatActivity implements SensorEventListener{
 
@@ -40,10 +33,25 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
    // private GPS gps;
     private ArrowCalculator arrowCalculator;
     private Location myLocation = null;
-    private Location SjonSjon;
+    private Location goal;
 //    private int northDir = 0;
     private float dirRelativeNorth = 0;
     private boolean debug = false;
+
+    private final int closeEnoughDistance = 22;
+    private boolean hasReachedGoal = false;
+
+
+
+    private void closeEnough(Location location){
+        if(debug && arrowCalculator.getDistance(location) <closeEnoughDistance){
+            mTextMessage.setText("Close enougth " + arrowCalculator.getDistanceString(location));
+        }
+        if(!hasReachedGoal && arrowCalculator.getDistance(location) < closeEnoughDistance ){
+            startActivity(new Intent(this, MainAccelerometer.class));
+            hasReachedGoal = true;
+        }
+    }
 
 //    private MapView mapView;
 
@@ -98,7 +106,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         Bundle args = new Bundle();
         //args.putString(YesNoDialog.ARG_TITLE, title);
         //args.putString(YesNoDialog.ARG_MESSAGE, message);
-        int yesno = 0;
+        //int yesno = 0;
      //   dialog.setArguments(args);
         //dialog.setTargetFragment(this, yesno);
        // dialog.show(getFragmentManager(), "tag");
@@ -107,10 +115,19 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         //gps = new GPS(this);
 
         gps();
-        SjonSjon = new Location("");
-        SjonSjon.setLongitude(13.208543d);
-        SjonSjon.setLatitude(55.710605d);
-        arrowCalculator = new ArrowCalculator(SjonSjon);
+        goal = new Location("");
+
+        //SjönSjön
+        //goal.setLongitude(13.208543d);
+        //goal.setLatitude(55.710605d);
+
+        //Parkeringsplats nära ute
+        // 55.713374, 13.209769
+        goal.setLatitude(55.713374);
+        goal.setLongitude(13.209769);
+
+
+        arrowCalculator = new ArrowCalculator(goal);
 
         onCreateCompass();
 
@@ -125,9 +142,18 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         compass.setRotation(deg);
     }
 
-    /**Sets cclor from red = 0 to green = 100*/
+    /**Sets color from green = 0 to red = 100*/
     protected void colorArrow(float colorGradient) {
-        float hue = (100- (colorGradient / 100 * 120));
+        if(colorGradient > 100){
+            colorGradient = 0;
+        }
+        else if(colorGradient < 0){
+            colorGradient = 100;
+        }
+        else{
+            colorGradient = 100-colorGradient;
+        }
+        float hue = colorGradient / 100 * 120;
         int col = ColorUtils.HSLToColor(new float[]{colorGradient, 1, 0.5f});
         compass.setColorFilter(col);
         //compass.setColorFilter();
@@ -142,7 +168,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     }
 
     private String getRelativeLatLong(Location location){
-        return " Relative lat: " + (location.getLatitude()-SjonSjon.getLatitude()) + " relative long: " + (location.getLongitude()-SjonSjon.getLongitude());
+        return " Relative lat: " + (location.getLatitude()- goal.getLatitude()) + " relative long: " + (location.getLongitude()- goal.getLongitude());
      }
 
     private void gps() {
@@ -152,7 +178,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
             public void onLocationChanged(Location location) {
                 //we want
                 if(debug) {
-                    mTextMessage.setText(getLatLong(location) + getRelativeLatLong(location) + " direction " + arrowCalculator.getDirection(location));
+                    mTextMessage.setText(arrowCalculator.getDistanceString(location) + "\n\n" +getLatLong(location) + getRelativeLatLong(location) + " direction " + arrowCalculator.getDirection(location));
                 } else{
                     mTextMessage.setText(arrowCalculator.getDistanceString(location));
                 }
@@ -162,6 +188,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
              //   rotateArrow(arrowCalculator.getDirection(location));
                 dirRelativeNorth = arrowCalculator.getDirection(location);
                 colorArrow(arrowCalculator.getDistance(location));
+                closeEnough(location);
             }
 
             @Override
