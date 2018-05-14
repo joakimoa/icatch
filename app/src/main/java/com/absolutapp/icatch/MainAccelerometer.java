@@ -58,11 +58,11 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
                         Intent soundServiceIntent = new Intent(getApplicationContext(), VictoryService.class);
                         startService(soundServiceIntent);
                         Toast.makeText(getBaseContext(), "Grattis! Zon botad",
-                                Toast.LENGTH_SHORT).show();
+                                Toast.LENGTH_LONG).show();
+                        exitApp();
                     }
                 }
             }, 50);
-
         }
     }
 
@@ -118,4 +118,8 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
         stopService(new Intent(MainAccelerometer.this, VictoryService.class));
     }
 
+    private void exitApp() {
+                    Toast.makeText(getBaseContext(), "Return",
+                            Toast.LENGTH_SHORT).show();
+    }
 }
