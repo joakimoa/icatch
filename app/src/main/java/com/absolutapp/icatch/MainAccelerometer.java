@@ -41,9 +41,6 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
     }
 
     public void onAccelerationChanged(float x, float y, float z) {
-        if (cleared){
-            // Return to game activity
-        }
 
     }
 
