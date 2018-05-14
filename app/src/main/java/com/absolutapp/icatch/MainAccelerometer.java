@@ -30,8 +30,12 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
     public Vibrator v;
 
 
+
+    private Bundle savedInstanceState;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.savedInstanceState = savedInstanceState;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.accelerometer_example_main);
         imageview2 = findViewById(R.id.imageView2);
@@ -125,9 +129,17 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
         stopService(new Intent(MainAccelerometer.this, VictoryService.class));
     }
 
+
     private void exitApp() {
-                    Toast.makeText(getBaseContext(), "Return",
-                            Toast.LENGTH_SHORT).show();
-                    
+                  //  Toast.makeText(getBaseContext(), "Return",Toast.LENGTH_SHORT).show();
+                  //  setResult(1);;
+
+     //  Intent resultIntent = new Intent(null);
+       // resultIntent.putExtra(GameActivity.WIN_RESULT_ID,true);
+        setResult(Activity.RESULT_OK);
+      //  finish();
+
+        finishAfterTransition();
+          //finish();
     }
 }

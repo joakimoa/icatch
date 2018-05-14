@@ -2,6 +2,7 @@ package com.absolutapp.icatch;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -28,6 +29,7 @@ import android.support.v4.graphics.ColorUtils;
 
 public class GameActivity extends AppCompatActivity implements SensorEventListener{
 
+
     private TextView mTextMessage;
     private ImageView compass;
    // private GPS gps;
@@ -49,8 +51,9 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
             mTextMessage.setText("Close enougth " + arrowCalculator.getDistanceString(location));
         }
         if(!hasReachedGoal && arrowCalculator.getDistance(location) < closeEnoughDistance ){
-            startActivity(new Intent(this, MainAccelerometer.class));
             hasReachedGoal = true;
+           startActivityForResult(new Intent(this, MainAccelerometer.class),1);
+
         }
     }
 
@@ -362,8 +365,11 @@ private SensorManager mSensorManager;
         mAzimuth = Math.round(mAzimuth);
      //   compass_img.setRotation(-mAzimuth);
         //northDir = -mAzimuth;
-        setNorth(-mAzimuth);
-//        String where = "NW";
+        if(GPSset) {
+            setNorth(-mAzimuth);
+        }
+        //
+//  String where = "NW";
 //
 //        if (mAzimuth >= 350 || mAzimuth <= 10) {
 //            where = "N";
@@ -400,8 +406,29 @@ private SensorManager mSensorManager;
     }
 
     public void testFramme(View view) {
-        startActivity(new Intent(this, MainAccelerometer.class));
-        finish();
+        startActivityForResult(new Intent(this, MainAccelerometer.class),1);
+
+     //   finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("OnActivityResult", "onActivityResult: " + "request: " + requestCode  +" result: " + resultCode);
+        if(requestCode == 1 && resultCode == Activity.RESULT_OK){
+            mTextMessage.setText("WON!!!");
+          //  compass.setImageDrawable(getDrawable(R.drawable.ic_hourglass_empty_black_24dp));
+            onWon();
+        }
+        //if(requestCode == 2 && resultCode == Activity.RESULT_OK){
+         //   mTextMessage.setText("WON!!!");
+        //}
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+
+    private void onWon(){
+        //Denna körs när man vinner. Använd för att öppna vinnar-skärm
     }
 }
 
