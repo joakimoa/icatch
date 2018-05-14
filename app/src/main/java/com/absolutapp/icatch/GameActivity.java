@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v4.graphics.ColorUtils;
 
+
 public class GameActivity extends AppCompatActivity implements SensorEventListener{
 
 
@@ -85,7 +86,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
                     return true;
                 case R.id.navigation_notifications:
                     //mTextMessage.setText(R.string.title_notifications);
-                    colorArrow(60);
+                   // colorArrow(60);
 
                    // Location myLocation = arrowCalculator.getMyLocation();
                  //   if (myLocation != null) {
@@ -95,10 +96,15 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
      //                   mTextMessage.setText("No known location");
        //             }
                     //debug = true;
-                    if(++startDebugCounter>4){
+
+                    //  setResult(1);;
+                    if(++startDebugCounter>=4){
                         debug = true;
                         mTextMessage.setTextSize(12);
                     }
+                  /*  if(startDebugCounter>2 && startDebugCounter<2) {
+                        Toast.makeText(getBaseContext(), "Tap " + (4 - startDebugCounter) + " times to start debug", Toast.LENGTH_SHORT).show();
+                    }*/
                     return true;
             }
             return false;
@@ -196,6 +202,9 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+                if(startDebugCounter>0){
+                    startDebugCounter--;
+                }
                 if(!GPSset){
                     GPSset = true;
                     //compass.setImageDrawable(getDrawable(R.drawable.ic_gps_not_fixed_black_24dp));
