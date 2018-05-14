@@ -15,18 +15,23 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.Image;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.support.v4.graphics.ColorUtils;
@@ -47,6 +52,11 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
 //    private MapView mapView;
 
+    private LinearLayout dots1;
+    private LinearLayout dots2;
+    private LinearLayout dots3;
+    private ImageView[] dots;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -54,10 +64,10 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+                    mTextMessage.setText(R.string.title_zone1);
                     return true;
                 case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
+                    mTextMessage.setText(R.string.title_zone2);
 
                     //   rotateArrow(90);
                     //rotateArrow(90);
@@ -114,8 +124,61 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
         onCreateCompass();
 
+        // on some click or some loading we need to wait for...
+        int seconds = 20;
+        ProgressBar pb1 = (ProgressBar) findViewById(R.id.progress1);
+        pb1.setVisibility(ProgressBar.VISIBLE);
+        pb1.setMax(seconds);
+        TimerAsyncTask tat1 = new TimerAsyncTask(pb1, seconds);
+        AsyncTaskTools.execute(tat1);
+        ProgressBar pb2 = (ProgressBar) findViewById(R.id.progress2);
+        pb2.setVisibility(ProgressBar.VISIBLE);
+        pb2.setMax(seconds + 10);
+        TimerAsyncTask tat2 = new TimerAsyncTask(pb2, seconds + 10);
+        AsyncTaskTools.execute(tat2);
+        ProgressBar pb3 = (ProgressBar) findViewById(R.id.progress3);
+        pb3.setVisibility(ProgressBar.VISIBLE);
+        pb3.setMax(seconds + 20);
+        TimerAsyncTask tat3 = new TimerAsyncTask(pb3, seconds + 20);
+        AsyncTaskTools.execute(tat3);
 
 
+        // dots
+        this.dots1 = (LinearLayout) findViewById(R.id.dots1);
+        this.dots2 = (LinearLayout) findViewById(R.id.dots2);
+        this.dots3 = (LinearLayout) findViewById(R.id.dots3);
+
+        updateDots(dots1,0);
+        updateDots(dots2, 2);
+        updateDots(dots3, 1);
+
+    }
+
+    private void updateDots(LinearLayout ll, int currentPosition) {
+        if(ll != null) {
+            ll.removeAllViews();
+        }
+
+        int noDots = 3;
+
+        dots = new ImageView[noDots];
+
+        for (int i = 0; i < noDots; i++) {
+            dots[i] = new ImageView(this);
+            if(i<=currentPosition) {
+                dots[i].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.active_dots));
+                dots[i].setColorFilter(Color.RED);
+            } else {
+                dots[i].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.default_dots));
+            }
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+
+            params.setMargins(4, 0, 4, 0);
+
+            ll.addView(dots[i], params);
+        }
     }
 
 

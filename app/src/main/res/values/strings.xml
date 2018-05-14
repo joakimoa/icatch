@@ -3,9 +3,9 @@
     <string name="title_activity_instructions">iCatch</string>
     <string name="title_activity_backstory">BackstoryActivity</string>
     <string name="title_activity_game">GameActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_zone1">Zon 1</string>
+    <string name="title_zone2">Zon 2</string>
+    <string name="title_zone3">Zon 3</string>
 
 
     <!-- slide 1 title and descr -->
