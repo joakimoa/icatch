@@ -44,6 +44,8 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     private boolean hasReachedGoal = false;
     private boolean GPSset = false;
 
+    int startDebugCounter = 0;
+
 
 
     private void closeEnough(Location location){
@@ -66,15 +68,20 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+                    //mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
+                    //mTextMessage.setText(R.string.title_dashboard);
 
                     //   rotateArrow(90);
                     //rotateArrow(90);
                     //mTextMessage.setText(((Float) arrowCalculator.getDistance()).toString());
-                    debug = false;
+
+                    if(debug) {
+                        debug = false;
+                        mTextMessage.setTextSize(40);
+                        startDebugCounter = 0;
+                    }
                     return true;
                 case R.id.navigation_notifications:
                     //mTextMessage.setText(R.string.title_notifications);
@@ -87,8 +94,11 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
   //                  } else {
      //                   mTextMessage.setText("No known location");
        //             }
-                    debug = true;
-
+                    //debug = true;
+                    if(++startDebugCounter>4){
+                        debug = true;
+                        mTextMessage.setTextSize(12);
+                    }
                     return true;
             }
             return false;
@@ -100,6 +110,9 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         mTextMessage = (TextView) findViewById(R.id.message);
+
+        mTextMessage.setTextSize(40);
+        //mTextMessage.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         //     mapView = (MapView) findViewById(R.id.mapView);
