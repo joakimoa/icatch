@@ -56,6 +56,8 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
 
         } else {
             // Called when Motion Detected
+            Intent soundServiceIntent = new Intent(getApplicationContext(), VictoryService.class);
+            startService(soundServiceIntent);
             Toast.makeText(getBaseContext(), "Grattis! Zon botad",
                     Toast.LENGTH_SHORT).show();
         }
@@ -72,7 +74,7 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
             AccelerometerManager.startListening(this);
         }
 
-        stopService(new Intent(MainAccelerometer.this, SoundService.class));
+        stopSounds();
     }
 
     @Override
@@ -87,7 +89,7 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
             
         }
 
-        stopService(new Intent(MainAccelerometer.this, SoundService.class));
+        stopSounds();
     }
 
     @Override
@@ -105,7 +107,12 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
                     Toast.LENGTH_SHORT).show();
         }
 
+        stopSounds();
+    }
+
+    private void stopSounds() {
         stopService(new Intent(MainAccelerometer.this, SoundService.class));
+        stopService(new Intent(MainAccelerometer.this, VictoryService.class));
     }
 
 }
