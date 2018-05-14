@@ -7,10 +7,14 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private CardView h2p, playBtn;
+    private Switch diffSwitch;
+    public static boolean HARD_DIFFICULTY = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +34,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         playBtn = findViewById(R.id.play);
         h2p.setOnClickListener(this);
         playBtn.setOnClickListener(this);
-
+        diffSwitch = findViewById(R.id.difficultySwitch);
         Intent musicServiceIntent = new Intent(getApplicationContext(), MusicService.class);
         startService(musicServiceIntent);
+
+        /**
+         * Decides the difficulty for the game
+         */
+        diffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                HARD_DIFFICULTY = isChecked;
+            }
+        });
 
     }
 

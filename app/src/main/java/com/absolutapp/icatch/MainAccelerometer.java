@@ -3,15 +3,19 @@ package com.absolutapp.icatch;
 /**
  * Created by Joakim on 2018-05-09.
  */
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.os.Handler;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import static android.os.SystemClock.sleep;
+import static android.os.VibrationEffect.DEFAULT_AMPLITUDE;
 
 public class MainAccelerometer extends Activity implements AccelerometerListener{
     public int [] imageArray = {R.drawable.pill0, R.drawable.pill05,
@@ -23,6 +27,7 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
     public int pillcount = 9;
     public ImageView imageview2;
     public Boolean cleared = false;
+    public Vibrator v;
 
 
     @Override
@@ -31,8 +36,8 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
         setContentView(R.layout.accelerometer_example_main);
         imageview2 = findViewById(R.id.imageView2);
         imageview2.setImageResource(imageArray[10]);
+        v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
-        // Check onResume Method to start accelerometer listener
     }
 
     public void onAccelerationChanged(float x, float y, float z) {
@@ -48,9 +53,11 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
             startService(soundServiceIntent);
             imageview2.setImageResource(imageArray[pillcount]);
             pillcount--;
+            v.vibrate(50);
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 public void run() {
+                    v.cancel();
                     imageview2.setImageResource(imageArray[pillcount]);
                     pillcount--;
                     if (pillcount <= 0){

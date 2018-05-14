@@ -13,9 +13,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+/**
+ * Creates the popup window for backstory dialog
+ */
 public class StoryDialog extends Activity {
     private TextView bgStory;
     @Override
+
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.popwindow);
