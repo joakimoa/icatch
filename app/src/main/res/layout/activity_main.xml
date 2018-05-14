@@ -8,6 +8,57 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/hardDiff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:text="SVÅR"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/difficultySwitch"
+        app:layout_constraintTop_toBottomOf="@+id/h2p" />
+
+    <TextView
+        android:id="@+id/easyDiff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="30dp"
+        android:text="LÄTT"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/difficultySwitch"
+        app:layout_constraintTop_toBottomOf="@+id/h2p" />
+
+    <Switch
+        android:id="@+id/difficultySwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        android:layout_marginEnd="172dp"
+        android:layout_marginStart="172dp"
+        android:layout_marginTop="30dp"
+        android:checked="false"
+        android:scaleX="2"
+        android:scaleY="2"
+        android:textColor="#fff"
+        android:thumbTint="@color/colorAccent"
+        android:trackTint="#fff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/h2p"
+        tools:checked="false" />
+
+    <TextView
         android:id="@+id/textView"
         android:layout_width="155dp"
         android:layout_height="72dp"
@@ -49,10 +100,8 @@
         android:id="@+id/play"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="80dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
         app:cardBackgroundColor="@color/colorAccent"
         app:cardCornerRadius="25dp"
         app:cardElevation="10dp"
@@ -69,7 +118,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Play"
+                android:text="Starta spelet"
                 android:textColor="#fff"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -91,7 +140,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/play">
+        app:layout_constraintTop_toBottomOf="@+id/play"
+        app:layout_constraintVertical_bias="0.245">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -102,7 +152,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="How to play"
+                android:text="Hur man spelar"
                 android:textColor="#fff"
                 android:textSize="18sp"
                 android:textStyle="bold" />

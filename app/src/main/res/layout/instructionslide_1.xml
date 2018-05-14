@@ -5,25 +5,25 @@
     android:layout_height="match_parent"
     android:background="@color/colorSlide_1"
     >
-    
+
     <TextView
+        android:id="@+id/slide_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/slide_1_title"
-        android:textSize="30sp"
-        android:textStyle="bold"
         android:layout_marginTop="150dp"
         android:gravity="center_horizontal"
-        android:id="@+id/slide_title"
-        />
+        android:text="@string/slide_1_title"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="@string/slide_1_desc"
-        android:layout_marginTop="200dp"
-        android:textAlignment="center"
-        android:textSize="17sp"
         android:layout_centerInParent="true"
-        />
+        android:layout_marginTop="200dp"
+        android:text="@string/slide_1_desc"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="17sp" />
 </RelativeLayout>
