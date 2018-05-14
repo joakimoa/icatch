@@ -142,8 +142,10 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         compass.setRotation(deg);
     }
 
-    /**Sets color from green = 0 to red = 100*/
+    /**Sets color from green = closeEnougthDistance to red = 100*/
     protected void colorArrow(float colorGradient) {
+
+
         if(colorGradient > 100){
             colorGradient = 0;
         }
@@ -153,7 +155,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         else{
             colorGradient = 100-colorGradient;
         }
-        float hue = colorGradient / 100 * 120;
+        float hue = (colorGradient-closeEnoughDistance) / (100-closeEnoughDistance) * 120;
         int col = ColorUtils.HSLToColor(new float[]{colorGradient, 1, 0.5f});
         compass.setColorFilter(col);
         //compass.setColorFilter();
