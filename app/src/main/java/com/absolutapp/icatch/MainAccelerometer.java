@@ -121,5 +121,6 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
     private void exitApp() {
                     Toast.makeText(getBaseContext(), "Return",
                             Toast.LENGTH_SHORT).show();
+                    
     }
 }
