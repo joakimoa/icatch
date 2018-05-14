@@ -40,6 +40,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     private final int closeEnoughDistance = 22;
     private boolean hasReachedGoal = false;
+    private boolean GPSset = false;
 
 
 
@@ -114,6 +115,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
         //gps = new GPS(this);
 
+        mTextMessage.setText("Waiting for GPS");
         gps();
         goal = new Location("");
 
@@ -178,6 +180,11 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+                if(!GPSset){
+                    GPSset = true;
+                    //compass.setImageDrawable(getDrawable(R.drawable.ic_gps_not_fixed_black_24dp));
+                    compass.setImageDrawable(getDrawable(R.drawable.ic_arrow_upward_black_24dp));
+                }
                 //we want
                 if(debug) {
                     mTextMessage.setText(arrowCalculator.getDistanceString(location) + "\n\n" +getLatLong(location) + getRelativeLatLong(location) + " direction " + arrowCalculator.getDirection(location));
