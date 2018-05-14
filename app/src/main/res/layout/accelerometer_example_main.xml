@@ -8,11 +8,10 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/textView4"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp"
         android:gravity="center"
-        android:text="Snabbt!! Eliminera viruset!\n Skaka telefonen för att sprida motgiftet"
+        android:text="Gör kaströrelser med telefonen\n för att kasta ut motgiftspiller"
         android:textSize="18sp" />
 
     <ImageView
@@ -22,5 +21,15 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         app:srcCompat="@drawable/pill5" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="Snabbt!! Eliminera visuset!"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
 </RelativeLayout>
