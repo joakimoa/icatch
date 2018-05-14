@@ -22,6 +22,7 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
             R.drawable.pill5};
     public int pillcount = 9;
     public ImageView imageview2;
+    public Boolean cleared = false;
 
 
     @Override
@@ -35,7 +36,9 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
     }
 
     public void onAccelerationChanged(float x, float y, float z) {
-        // TODO Auto-generated method stub
+        if (cleared){
+            // Return to game activity
+        }
 
     }
 
@@ -50,16 +53,16 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
                 public void run() {
                     imageview2.setImageResource(imageArray[pillcount]);
                     pillcount--;
+                    if (pillcount <= 0){
+                        cleared = true;
+                        Intent soundServiceIntent = new Intent(getApplicationContext(), VictoryService.class);
+                        startService(soundServiceIntent);
+                        Toast.makeText(getBaseContext(), "Grattis! Zon botad",
+                                Toast.LENGTH_SHORT).show();
+                    }
                 }
             }, 50);
 
-
-        } else {
-            // Called when Motion Detected
-            Intent soundServiceIntent = new Intent(getApplicationContext(), VictoryService.class);
-            startService(soundServiceIntent);
-            Toast.makeText(getBaseContext(), "Grattis! Zon botad",
-                    Toast.LENGTH_SHORT).show();
         }
     }
 
