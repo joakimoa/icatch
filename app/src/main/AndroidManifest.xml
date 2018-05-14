@@ -32,7 +32,8 @@
             android:enabled="true" />
         <service
             android:name=".FailureService"
-            android:enabled="true" />
+            android:enabled="true"
+            />
 
         <meta-data
             android:name="preloaded_fonts"
