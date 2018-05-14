@@ -127,7 +127,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**Sets cclor from red = 0 to green = 100*/
     protected void colorArrow(float colorGradient) {
-        float hue = colorGradient / 100 * 120;
+        float hue = (100- (colorGradient / 100 * 120));
         int col = ColorUtils.HSLToColor(new float[]{colorGradient, 1, 0.5f});
         compass.setColorFilter(col);
         //compass.setColorFilter();
