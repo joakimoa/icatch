@@ -19,7 +19,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
 
         <service
             android:name=".MusicService"
@@ -32,8 +32,7 @@
             android:enabled="true" />
         <service
             android:name=".FailureService"
-            android:enabled="true"
-            />
+            android:enabled="true" />
 
         <meta-data
             android:name="preloaded_fonts"
@@ -55,17 +54,17 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".GameActivity"
-            android:label="@string/title_activity_game"></activity>
+            android:label="@string/title_activity_game" />
         <activity
             android:name=".StoryDialog"
-            android:theme="@style/AppTheme.customTheme"></activity>
+            android:theme="@style/AppTheme.customTheme" />
         <activity
             android:name=".MainAccelerometer"
-            android:label="MainAccelerometer"></activity>
+            android:label="MainAccelerometer" />
         <activity
             android:name=".LosingScreen"
-            android:label="LosingScreen"
-            ></activity>
+            android:label="LosingScreen" />
+        <activity android:name=".VictoryActivity"></activity>
     </application>
 
 </manifest>

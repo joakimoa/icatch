@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.IBinder;
 
+/**
+ * Plays the victory music
+ */
 public class VictoryService extends Service {
     MediaPlayer mp;
 

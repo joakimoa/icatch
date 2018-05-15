@@ -517,7 +517,8 @@ private SensorManager mSensorManager;
 
 
     private void onWon(){
-        //Denna körs när man vinner. Använd för att öppna vinnar-skärm
+        startActivity(new Intent(this, VictoryActivity.class));
+        finish();
     }
 }
 
