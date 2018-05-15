@@ -170,7 +170,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         onCreateCompass();
 
         // on some click or some loading we need to wait for...
-        int seconds = 20;
+        int seconds = (MainActivity.HARD_DIFFICULTY ? 5 : 20);
         ProgressBar pb1 = (ProgressBar) findViewById(R.id.progress1);
         pb1.setVisibility(ProgressBar.VISIBLE);
         pb1.setMax(seconds);
