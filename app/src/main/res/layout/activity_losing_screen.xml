@@ -29,6 +29,8 @@
         android:shadowDy="1.3"
         android:shadowRadius="3"
         android:shadowColor="@android:color/black"
+        android:background="#99000000"
+
         />
 
     <Button

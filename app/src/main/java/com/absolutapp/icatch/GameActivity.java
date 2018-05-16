@@ -224,7 +224,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
                 if (i <= filledDots-1) {
                     dots[i].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.active_dots));
-                    dots[i].setColorFilter(Color.RED);
+                    dots[i].setColorFilter(0xffff4081);
                 } else {
                     dots[i].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.default_dots));
                 }
