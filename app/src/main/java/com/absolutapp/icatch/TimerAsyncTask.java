@@ -25,12 +25,6 @@ public class TimerAsyncTask extends AsyncTask<Void, Integer, String> {
 
     @Override
     protected String doInBackground(Void... params) {
-//        while (count < 5) {
-//            SystemClock.sleep(1000);
-//            count++;
-//            publishProgress(count * 20);
-//        }
-//        return "Complete";
 
         while (count < seconds) {
             SystemClock.sleep(1000);
@@ -49,7 +43,6 @@ public class TimerAsyncTask extends AsyncTask<Void, Integer, String> {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
-
         gameActivity.gameTimerUpdate(zoneNo);
     }
 }

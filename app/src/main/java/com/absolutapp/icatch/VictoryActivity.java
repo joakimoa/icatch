@@ -25,6 +25,8 @@ public class VictoryActivity extends AppCompatActivity implements View.OnClickLi
         v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         v.vibrate(2000);
 
+        GameActivity.GAME_WON = false;
+
         menuButton = findViewById(R.id.menuButton);
         menuButton.setOnClickListener(this);
         startMusic();

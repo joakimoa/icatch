@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,14 +40,13 @@ import android.support.v4.graphics.ColorUtils;
 
 public class GameActivity extends AppCompatActivity implements SensorEventListener{
 
-
+    public static boolean BG_CLOSED;
+    public static boolean GAME_WON;
     private TextView mTextMessage;
     private ImageView compass;
-   // private GPS gps;
     private ArrowCalculator arrowCalculator;
     private Location myLocation = null;
     private Location goal;
-//    private int northDir = 0;
     private float dirRelativeNorth = 0;
     private boolean debug = false;
 
@@ -75,8 +75,6 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         }
     }
 
-//    private MapView mapView;
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -84,15 +82,8 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    //mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.navigation_dashboard:
-                    //mTextMessage.setText(R.string.title_dashboard);
-
-                    //   rotateArrow(90);
-                    //rotateArrow(90);
-                    //mTextMessage.setText(((Float) arrowCalculator.getDistance()).toString());
-
                     if(debug) {
                         debug = false;
                         mTextMessage.setTextSize(40);
@@ -100,26 +91,10 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
                     }
                     return true;
                 case R.id.navigation_notifications:
-                    //mTextMessage.setText(R.string.title_notifications);
-                   // colorArrow(60);
-
-                   // Location myLocation = arrowCalculator.getMyLocation();
-                 //   if (myLocation != null) {
-                   //     mTextMessage.setText("Lat: " + myLocation.getLatitude() + " Long: " + myLocation.getLongitude());
-//
-  //                  } else {
-     //                   mTextMessage.setText("No known location");
-       //             }
-                    //debug = true;
-
-                    //  setResult(1);;
                     if(++startDebugCounter>=4){
                         debug = true;
                         mTextMessage.setTextSize(12);
                     }
-                  /*  if(startDebugCounter>2 && startDebugCounter<2) {
-                        Toast.makeText(getBaseContext(), "Tap " + (4 - startDebugCounter) + " times to start debug", Toast.LENGTH_SHORT).show();
-                    }*/
                     return true;
             }
             return false;
@@ -129,28 +104,19 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.activity_game);
         mTextMessage = (TextView) findViewById(R.id.message);
 
         mTextMessage.setTextSize(40);
-        //mTextMessage.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        //     mapView = (MapView) findViewById(R.id.mapView);
         compass = (ImageView) findViewById(R.id.compassImageView);
 
         // story dialog popup
         // DialogFragment dialog = new StoryDialog();
         Bundle args = new Bundle();
-        //args.putString(YesNoDialog.ARG_TITLE, title);
-        //args.putString(YesNoDialog.ARG_MESSAGE, message);
-        //int yesno = 0;
-     //   dialog.setArguments(args);
-        //dialog.setTargetFragment(this, yesno);
-       // dialog.show(getFragmentManager(), "tag");
         startActivity(new Intent(this, StoryDialog.class));
-
-        //gps = new GPS(this);
 
         mTextMessage.setText("Waiting for GPS");
         gps();
@@ -170,6 +136,11 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
         onCreateCompass();
 
+        if(GAME_WON){
+            GAME_WON = false;
+            onWon();
+            finish();
+        }
         // difficulty
         if (MainActivity.HARD_DIFFICULTY) {
             timerSeconds =  5;
@@ -193,7 +164,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         }
 
         // dots
-        dotsArray = new int[]{0,0,0};
+        dotsArray = new int[]{0, 0, 0};
 
         dotsLayouts = new LinearLayout[3];
         dotsLayouts[0] = (LinearLayout) findViewById(R.id.dots1);
@@ -203,7 +174,9 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         updateDots(dotsLayouts[0], dotsArray[0]);
         updateDots(dotsLayouts[1], dotsArray[1]);
         updateDots(dotsLayouts[2], dotsArray[2]);
+
     }
+
 
     // updates the dots
     public void gameTimerUpdate(int n) {
@@ -262,7 +235,6 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
 
     protected void rotateArrow(float deg) {
-        //compass.setRotation(compass.getRotation() + deg);
         compass.setRotation(deg);
     }
 
@@ -282,7 +254,6 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         float hue = (colorGradient-closeEnoughDistance) / (100-closeEnoughDistance) * 120;
         int col = ColorUtils.HSLToColor(new float[]{colorGradient, 1, 0.5f});
         compass.setColorFilter(col);
-        //compass.setColorFilter();
     }
 
 
@@ -307,8 +278,13 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
                 }
                 if(!GPSset){
                     GPSset = true;
-                    //compass.setImageDrawable(getDrawable(R.drawable.ic_gps_not_fixed_black_24dp));
                     compass.setImageDrawable(getDrawable(R.drawable.ic_arrow_upward_black_24dp));
+
+                }
+                if(BG_CLOSED){
+                    Log.d("test", "onLocationChanged: " + BG_CLOSED);
+                    BG_CLOSED = false;
+                  //  initiateTimers();
                 }
                 //we want
                 if(debug) {
@@ -316,10 +292,6 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
                 } else{
                     mTextMessage.setText(arrowCalculator.getDistanceString(location));
                 }
-                /// / rotateArrow(arrowCalculator.getDirection(myLocation));
-               // mTextMessage.setText(getLatLong(location) + getRelativeLatLong(location) + " direction " + arrowCalculator.getDirection(location));
-               // rotateArrow(arrowCalculator.getDirection(myLocation));
-             //   rotateArrow(arrowCalculator.getDirection(location));
                 dirRelativeNorth = arrowCalculator.getDirection(location);
                 colorArrow(arrowCalculator.getDistance(location));
                 closeEnough(location);
@@ -342,10 +314,8 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
                 Log.d("No gps","no gps");
             }
         };
-        //String provider = locationManager.getBestProvider(criteria, true);
 
         // Getting Current Location
-        // Location location = locationManager.getLastKnownLocation(provider);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
@@ -397,18 +367,9 @@ private SensorManager mSensorManager;
     private boolean mLastMagnetometerSet = false;
     int mAzimuth;
 
-
-
-
-
-
-
     private void onCreateCompass() {
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-
-
     }
-
 
     private void start() {
         if (mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR) == null) {
@@ -485,37 +446,9 @@ private SensorManager mSensorManager;
         }
 
         mAzimuth = Math.round(mAzimuth);
-     //   compass_img.setRotation(-mAzimuth);
-        //northDir = -mAzimuth;
         if(GPSset) {
             setNorth(-mAzimuth);
         }
-        //
-//  String where = "NW";
-//
-//        if (mAzimuth >= 350 || mAzimuth <= 10) {
-//            where = "N";
-//            //if (vibrator.hasVibrator()){
-//              //  vibrator.vibrate(10);
-//           // }
-//        }
-//        else if (mAzimuth < 350 && mAzimuth > 280)
-//            where = "NW";
-//        else if (mAzimuth <= 280 && mAzimuth > 260)
-//            where = "W";
-//        else if (mAzimuth <= 260 && mAzimuth > 190)
-//            where = "SW";
-//        else if (mAzimuth <= 190 && mAzimuth > 170)
-//            where = "S";
-//        else if (mAzimuth <= 170 && mAzimuth > 100)
-//            where = "SE";
-//        else if (mAzimuth <= 100 && mAzimuth > 80)
-//            where = "E";
-//        else if (mAzimuth <= 80 && mAzimuth > 10)
-//            where = "NE";
-//
-//
-//        txt_compass.setText(mAzimuth + "° " + where);
     }
 
     private void setNorth(int north) {
@@ -529,8 +462,6 @@ private SensorManager mSensorManager;
 
     public void testFramme(View view) {
         startActivityForResult(new Intent(this, MainAccelerometer.class),1);
-
-     //   finish();
     }
 
     @Override
@@ -538,24 +469,25 @@ private SensorManager mSensorManager;
         Log.d("OnActivityResult", "onActivityResult: " + "request: " + requestCode  +" result: " + resultCode);
         if(requestCode == 1 && resultCode == Activity.RESULT_OK){
             mTextMessage.setText("WON!!!");
-          //  compass.setImageDrawable(getDrawable(R.drawable.ic_hourglass_empty_black_24dp));
             onWon();
         }
-        //if(requestCode == 2 && resultCode == Activity.RESULT_OK){
-         //   mTextMessage.setText("WON!!!");
-        //}
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-
-
     private void onWon(){
+        for (TimerAsyncTask timerAsyncTask : tasks){
+            timerAsyncTask.cancel(true);
+        }
         startActivity(new Intent(this, VictoryActivity.class));
         finish();
     }
 
     private void onDefeat() {
-        mTextMessage.setText("YOU LOST!!!");
+        for (TimerAsyncTask timerAsyncTask : tasks){
+            timerAsyncTask.cancel(true);
+        }
+        startActivity(new Intent(this, LosingScreen.class));
+        finish();
     }
 }
 

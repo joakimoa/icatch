@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.method.ScrollingMovementMethod;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -39,6 +40,8 @@ public class StoryDialog extends Activity {
 
             @Override
             public void onClick(View v) {
+                GameActivity.BG_CLOSED = true;
+                Log.d("test2", "onClick: " + GameActivity.BG_CLOSED);
                 finish();
             }
         });

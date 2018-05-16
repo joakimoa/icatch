@@ -5,7 +5,9 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GameActivity">
+    tools:context=".GameActivity"
+    android:background="@color/colorSlide_1"
+    >
 
     <TextView
         android:id="@+id/message"
@@ -23,7 +25,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="0dp"
         android:layout_marginStart="0dp"
-        android:background="?android:attr/windowBackground"
+        android:background="#344955"
+        app:itemIconTint="@color/btn_color"
+        app:itemTextColor="@color/btn_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -40,23 +44,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_hourglass_empty_black_24dp"
         />
-    <!-- app:srcCompat="@drawable/ic_arrow_upward_black_24dp"-->
-
-
-    <!--<com.google.android.gms.maps.MapView
-        android:id="@+id/mapView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        tools:layout_editor_absoluteX="279dp"
-        tools:layout_editor_absoluteY="434dp" />-->
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="25dp"
         android:onClick="testFramme"
         android:text="Framme"
         app:layout_constraintEnd_toEndOf="parent"
