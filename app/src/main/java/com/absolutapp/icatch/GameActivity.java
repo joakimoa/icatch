@@ -56,6 +56,12 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     int startDebugCounter = 0;
 
+    public LinearLayout[] dotsLayouts;
+    public ImageView[] dots;
+    private int[] dotsArray;
+    private TimerAsyncTask[] tasks;
+    private ProgressBar[] progressBars;
+    private int timerSeconds;
 
 
     private void closeEnough(Location location){
@@ -70,11 +76,6 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     }
 
 //    private MapView mapView;
-
-    private LinearLayout dots1;
-    private LinearLayout dots2;
-    private LinearLayout dots3;
-    private ImageView[] dots;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -169,37 +170,62 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
         onCreateCompass();
 
-        // on some click or some loading we need to wait for...
-        int seconds = 20;
-        ProgressBar pb1 = (ProgressBar) findViewById(R.id.progress1);
-        pb1.setVisibility(ProgressBar.VISIBLE);
-        pb1.setMax(seconds);
-        TimerAsyncTask tat1 = new TimerAsyncTask(pb1, seconds);
-        AsyncTaskTools.execute(tat1);
-        ProgressBar pb2 = (ProgressBar) findViewById(R.id.progress2);
-        pb2.setVisibility(ProgressBar.VISIBLE);
-        pb2.setMax(seconds + 10);
-        TimerAsyncTask tat2 = new TimerAsyncTask(pb2, seconds + 10);
-        AsyncTaskTools.execute(tat2);
-        ProgressBar pb3 = (ProgressBar) findViewById(R.id.progress3);
-        pb3.setVisibility(ProgressBar.VISIBLE);
-        pb3.setMax(seconds + 20);
-        TimerAsyncTask tat3 = new TimerAsyncTask(pb3, seconds + 20);
-        AsyncTaskTools.execute(tat3);
+        // difficulty
+        if (MainActivity.HARD_DIFFICULTY) {
+            timerSeconds =  5;
+        } else {
+            timerSeconds = 20;
+        }
+
+        // loading bars and their AsyncTasks
+        progressBars = new ProgressBar[3];
+        tasks = new TimerAsyncTask[3];
+        progressBars[0] = (ProgressBar) findViewById(R.id.progress1);
+        progressBars[1] = (ProgressBar) findViewById(R.id.progress2);
+        progressBars[2] = (ProgressBar) findViewById(R.id.progress3);
+        for (int i = 0; i < 3; i++) {
+            int sec = timerSeconds + (i * 10);
+            progressBars[i].setMax(sec);
+            tasks[i] = new TimerAsyncTask(progressBars[i], sec, this, i);
+        }
+        for (int i = 0; i < 3; i++) {
+            AsyncTaskTools.execute(tasks[i]);
+        }
 
 
         // dots
-        this.dots1 = (LinearLayout) findViewById(R.id.dots1);
-        this.dots2 = (LinearLayout) findViewById(R.id.dots2);
-        this.dots3 = (LinearLayout) findViewById(R.id.dots3);
+        dotsArray = new int[]{0,0,0};
 
-        updateDots(dots1,0);
-        updateDots(dots2, 2);
-        updateDots(dots3, 1);
+        dotsLayouts = new LinearLayout[3];
+        dotsLayouts[0] = (LinearLayout) findViewById(R.id.dots1);
+        dotsLayouts[1] = (LinearLayout) findViewById(R.id.dots2);
+        dotsLayouts[2] = (LinearLayout) findViewById(R.id.dots3);
 
+        updateDots(dotsLayouts[0], dotsArray[0]);
+        updateDots(dotsLayouts[1], dotsArray[1]);
+        updateDots(dotsLayouts[2], dotsArray[2]);
     }
 
-    private void updateDots(LinearLayout ll, int currentPosition) {
+    // updates the dots
+    public void gameTimerUpdate(int n) {
+        dotsArray[n]++;
+        updateDots(dotsLayouts[n], dotsArray[n]);
+
+        for (int i = 0; i < dotsArray.length; i++) {
+            if (dotsArray[i] >= 3) {
+                onDefeat();
+                System.out.println("Game over");
+                return;
+            }
+        }
+        int sec = timerSeconds + (n * 10);
+        progressBars[n].setProgress(0);
+        progressBars[n].setMax(sec);
+        tasks[n] = new TimerAsyncTask(progressBars[n], sec, this, n);
+        AsyncTaskTools.execute(tasks[n]);
+    }
+
+    private void updateDots(LinearLayout ll, int filledDots) {
         if(ll != null) {
             ll.removeAllViews();
         }
@@ -208,21 +234,29 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
         dots = new ImageView[noDots];
 
-        for (int i = 0; i < noDots; i++) {
-            dots[i] = new ImageView(this);
-            if(i<=currentPosition) {
-                dots[i].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.active_dots));
-                dots[i].setColorFilter(Color.RED);
-            } else {
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        params.setMargins(4, 0, 4, 0);
+
+        if (filledDots == 0) {
+            for (int i = 0; i < noDots; i++) {
+                dots[i] = new ImageView(this);
                 dots[i].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.default_dots));
+                ll.addView(dots[i], params);
             }
+        } else {
+            for (int i = 0; i < noDots; i++) {
+                dots[i] = new ImageView(this);
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-
-            params.setMargins(4, 0, 4, 0);
-
-            ll.addView(dots[i], params);
+                if (i <= filledDots-1) {
+                    dots[i].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.active_dots));
+                    dots[i].setColorFilter(Color.RED);
+                } else {
+                    dots[i].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.default_dots));
+                }
+                ll.addView(dots[i], params);
+            }
         }
     }
 
@@ -518,6 +552,10 @@ private SensorManager mSensorManager;
 
     private void onWon(){
         //Denna körs när man vinner. Använd för att öppna vinnar-skärm
+    }
+
+    private void onDefeat() {
+        mTextMessage.setText("YOU LOST!!!");
     }
 }
 

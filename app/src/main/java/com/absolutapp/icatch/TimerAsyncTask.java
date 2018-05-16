@@ -8,10 +8,14 @@ public class TimerAsyncTask extends AsyncTask<Void, Integer, String> {
     private int count = 0;
     private int seconds;
     ProgressBar pb;
+    private GameActivity gameActivity;
+    private int zoneNo;
 
-    public TimerAsyncTask(ProgressBar pb, int seconds) {
+    public TimerAsyncTask(ProgressBar pb, int seconds, GameActivity gameActivity, int zoneNo) {
         this.pb = pb;
         this.seconds = seconds;
+        this.gameActivity = gameActivity;
+        this.zoneNo = zoneNo;
     }
 
     @Override
@@ -40,5 +44,12 @@ public class TimerAsyncTask extends AsyncTask<Void, Integer, String> {
     protected void onProgressUpdate(Integer... values) {
         pb.setProgress(values[0]);
         System.out.println("TimerAsyncTask update");
+    }
+
+    @Override
+    protected void onPostExecute(String result) {
+        super.onPostExecute(result);
+
+        gameActivity.gameTimerUpdate(zoneNo);
     }
 }
