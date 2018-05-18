@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private CardView h2p, playBtn;
     private Switch diffSwitch;
-    public static boolean HARD_DIFFICULTY = false;
+    public static boolean HARD_DIFFICULTY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         setContentView(R.layout.activity_main);
-
+        HARD_DIFFICULTY = false;
         h2p = findViewById(R.id.h2p);
         playBtn = findViewById(R.id.play);
         h2p.setOnClickListener(this);
