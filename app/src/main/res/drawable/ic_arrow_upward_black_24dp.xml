@@ -3,7 +3,16 @@
         android:height="300dp"
         android:viewportWidth="24.0"
         android:viewportHeight="24.0">
+<!--
     <path
         android:fillColor="#FF000000"
         android:pathData="M4,12l1.41,1.41L11,7.83V20h2V7.83l5.58,5.59L20,12l-8,-8 -8,8z"/>
+        -->
+    <!--
+    https://brightinventions.pl/blog/creating-simple-vector-drawables-in-android-studio/
+    -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M5,19 L 12,0 L 19,19 L 12,15  "
+    />
 </vector>

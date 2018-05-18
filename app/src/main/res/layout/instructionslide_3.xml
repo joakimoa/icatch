@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorSlide_1"
@@ -10,9 +11,11 @@
         android:id="@+id/slide_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="36dp"
         android:gravity="center_horizontal"
-        android:text="@string/slide_3_title"
+        android:text="@string/slide_4_title"
         android:textColor="@android:color/white"
         android:textSize="30sp"
         android:textStyle="bold" />
@@ -21,10 +24,21 @@
         android:id="@+id/slide_desc"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="200dp"
-        android:text="@string/slide_3_desc"
+        android:layout_below="@+id/imageView6"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="17dp"
+        android:text="@string/slide_4_desc"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="17sp" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:layout_below="@+id/slide_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13dp"
+        app:srcCompat="@drawable/distance_to_small" />
+
 </RelativeLayout>

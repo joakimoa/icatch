@@ -178,7 +178,6 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
-
     // updates the dots
     public void gameTimerUpdate(int n) {
         dotsArray[n]++;
@@ -283,7 +282,6 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
                 }
                 if(BG_CLOSED){
-                    Log.d("test", "onLocationChanged: " + BG_CLOSED);
                     BG_CLOSED = false;
                   //  initiateTimers();
                 }
