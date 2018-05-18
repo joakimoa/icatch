@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void startGame(View v)
     {
         startActivity(new Intent(this, GameActivity.class));
-        finish();
     }
 
     /**
