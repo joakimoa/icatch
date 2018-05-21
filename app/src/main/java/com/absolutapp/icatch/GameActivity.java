@@ -19,6 +19,8 @@ import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -63,6 +65,11 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     private TimerAsyncTask[] tasks;
     private ProgressBar[] progressBars;
     private int timerSeconds;
+
+    private Vibrator vibrator;
+    private boolean ticktock = false;
+    private boolean lastTick = false;
+    float currentDir= 0;
 
 
     private void closeEnough(Location location){
@@ -176,6 +183,8 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         updateDots(dotsLayouts[1], dotsArray[1]);
         updateDots(dotsLayouts[2], dotsArray[2]);
 
+        vibrator = (Vibrator) getBaseContext().getSystemService(getBaseContext().VIBRATOR_SERVICE);
+
     }
 
     // updates the dots
@@ -236,6 +245,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     protected void rotateArrow(float deg) {
         compass.setRotation(deg);
+        currentDir = deg;
     }
 
     /**Sets color from green = closeEnougthDistance to red = 100*/
@@ -447,7 +457,37 @@ private SensorManager mSensorManager;
         mAzimuth = Math.round(mAzimuth);
         if(GPSset) {
             setNorth(-mAzimuth);
+
+            float dir = (currentDir+360)%360;
+
+          //  Log.d("CurrentDir", "onSensorChanged: " + currentDir);
+            if(dir > 30 && dir < 330){
+                if(vibrator.hasVibrator()){
+                    if(ticktock != lastTick) {
+                        lastTick = ticktock;
+
+                        if (Build.VERSION.SDK_INT >= 26) {
+                            vibrator.vibrate(VibrationEffect.createOneShot(10, 70));
+                        } else {
+                            vibrator.vibrate(10);
+                        }
+
+                    }
+                }
+
+            }
+
+
+
+
         }
+
+
+
+
+
+
+
     }
 
     private void setNorth(int north) {
@@ -487,6 +527,10 @@ private SensorManager mSensorManager;
         }
         startActivity(new Intent(this, LosingScreen.class));
         finish();
+    }
+
+    public void tick() {
+        ticktock = !ticktock;
     }
 }
 
