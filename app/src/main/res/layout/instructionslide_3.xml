@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="60dp"
         android:gravity="center_horizontal"
         android:text="@string/slide_4_title"
         android:textColor="@android:color/white"
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageView6"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="20dp"
         android:text="@string/slide_4_desc"
         android:textAlignment="center"
         android:textColor="@android:color/white"
@@ -35,10 +35,10 @@
     <ImageView
         android:id="@+id/imageView6"
         android:layout_width="wrap_content"
-        android:layout_height="300dp"
+        android:layout_height="250dp"
         android:layout_below="@+id/slide_title"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="20dp"
         app:srcCompat="@drawable/distance_to_small" />
 
 </RelativeLayout>
