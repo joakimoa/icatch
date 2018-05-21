@@ -62,7 +62,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     public LinearLayout[] dotsLayouts;
     public ImageView[] dots;
     private int[] dotsArray;
-    private TimerAsyncTask[] tasks;
+    private TimerAsyncTask tasks;
     private ProgressBar[] progressBars;
     private int timerSeconds;
 
@@ -158,20 +158,33 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
         // loading bars and their AsyncTasks
         progressBars = new ProgressBar[3];
-        tasks = new TimerAsyncTask[3];
+        //tasks = new TimerAsyncTask[3];
         progressBars[0] = (ProgressBar) findViewById(R.id.progress1);
         progressBars[1] = (ProgressBar) findViewById(R.id.progress2);
         progressBars[2] = (ProgressBar) findViewById(R.id.progress3);
-        for (int i = 0; i < 3; i++) {
-            int sec = timerSeconds + (i * 10);
-            progressBars[i].setMax(sec);
-            tasks[i] = new TimerAsyncTask(progressBars[i], sec, this, i);
-        }
-        for (int i = 0; i < 3; i++) {
-            AsyncTaskTools.execute(tasks[i]);
-        }
+     //   for (int i = 0; i < 3; i++) {
+       //     int sec = timerSeconds + (i * 10);
+        //    progressBars[i].setMax(sec);
+        //    tasks[i] = new TimerAsyncTask(progressBars[i], sec, this, i);
+     //   }
+     //   for (int i = 0; i < 3; i++) {
+     //       AsyncTaskTools.execute(tasks[i]);
+     //   }
 
-        // dots
+        int[] sec = new int[3];
+        for (int i = 0; i < 3; i++) {
+            sec[i] = timerSeconds + (i * 10);
+            progressBars[i].setMax(sec[i]);
+        }
+        tasks = new TimerAsyncTask(progressBars, sec, this);
+       // for (int i = 0; i < 3; i++) {
+         //   AsyncTaskTools.execute(tasks[i]);
+        //}
+        AsyncTaskTools.execute(tasks);
+
+
+
+            // dots
         dotsArray = new int[]{0, 0, 0};
 
         dotsLayouts = new LinearLayout[3];
@@ -202,8 +215,9 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         int sec = timerSeconds + (n * 10);
         progressBars[n].setProgress(0);
         progressBars[n].setMax(sec);
-        tasks[n] = new TimerAsyncTask(progressBars[n], sec, this, n);
-        AsyncTaskTools.execute(tasks[n]);
+       // tasks[n] = new TimerAsyncTask(progressBars[n], sec, this, n);
+        tasks.reset(n);
+        //AsyncTaskTools.execute(tasks[n]);
     }
 
     private void updateDots(LinearLayout ll, int filledDots) {
@@ -514,23 +528,28 @@ private SensorManager mSensorManager;
     }
 
     private void onWon(){
-        for (TimerAsyncTask timerAsyncTask : tasks){
-            timerAsyncTask.cancel(true);
-        }
+        //for (TimerAsyncTask timerAsyncTask : tasks){
+            tasks.cancel(true);
+        //}
         startActivity(new Intent(this, VictoryActivity.class));
         finish();
     }
 
     private void onDefeat() {
-        for (TimerAsyncTask timerAsyncTask : tasks){
-            timerAsyncTask.cancel(true);
-        }
+       // for (TimerAsyncTask timerAsyncTask : tasks){
+         tasks.cancel(true);
+        //}
         startActivity(new Intent(this, LosingScreen.class));
         finish();
     }
 
     public void tick() {
         ticktock = !ticktock;
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        tasks.cancel(true);
     }
 }
 
