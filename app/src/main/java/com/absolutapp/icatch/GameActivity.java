@@ -6,8 +6,6 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -15,8 +13,6 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.media.Image;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
@@ -32,11 +28,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.support.v4.graphics.ColorUtils;
 
@@ -48,7 +42,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     private TextView mTextMessage;
     private ImageView compass;
     private ArrowCalculator arrowCalculator;
-    private Location myLocation = null;
+  //  private Location myLocation = null;
     private Location goal;
     private float dirRelativeNorth = 0;
     private boolean debug = false;
@@ -62,7 +56,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     public LinearLayout[] dotsLayouts;
     public ImageView[] dots;
     private int[] dotsArray;
-    private TimerAsyncTask tasks;
+    private TimerAsyncTask timerTask;
     private ProgressBar[] progressBars;
     private int timerSeconds;
 
@@ -156,35 +150,22 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
             timerSeconds = 20;
         }
 
-        // loading bars and their AsyncTasks
+        // loading bars and their AsyncTask (timerTask)
         progressBars = new ProgressBar[3];
-        //tasks = new TimerAsyncTask[3];
         progressBars[0] = (ProgressBar) findViewById(R.id.progress1);
         progressBars[1] = (ProgressBar) findViewById(R.id.progress2);
         progressBars[2] = (ProgressBar) findViewById(R.id.progress3);
-     //   for (int i = 0; i < 3; i++) {
-       //     int sec = timerSeconds + (i * 10);
-        //    progressBars[i].setMax(sec);
-        //    tasks[i] = new TimerAsyncTask(progressBars[i], sec, this, i);
-     //   }
-     //   for (int i = 0; i < 3; i++) {
-     //       AsyncTaskTools.execute(tasks[i]);
-     //   }
 
         int[] sec = new int[3];
         for (int i = 0; i < 3; i++) {
             sec[i] = timerSeconds + (i * 10);
             progressBars[i].setMax(sec[i]);
         }
-        tasks = new TimerAsyncTask(progressBars, sec, this);
-       // for (int i = 0; i < 3; i++) {
-         //   AsyncTaskTools.execute(tasks[i]);
-        //}
-        AsyncTaskTools.execute(tasks);
+        timerTask = new TimerAsyncTask(progressBars, sec, this);
+      //  AsyncTaskTools.execute(timerTask); //Fyttad till när man får GPS
 
 
-
-            // dots
+        // dots
         dotsArray = new int[]{0, 0, 0};
 
         dotsLayouts = new LinearLayout[3];
@@ -215,9 +196,9 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         int sec = timerSeconds + (n * 10);
         progressBars[n].setProgress(0);
         progressBars[n].setMax(sec);
-       // tasks[n] = new TimerAsyncTask(progressBars[n], sec, this, n);
-        tasks.reset(n);
-        //AsyncTaskTools.execute(tasks[n]);
+       // timerTask[n] = new TimerAsyncTask(progressBars[n], sec, this, n);
+        timerTask.reset(n);
+        //AsyncTaskTools.execute(timerTask[n]);
     }
 
     private void updateDots(LinearLayout ll, int filledDots) {
@@ -308,6 +289,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
                 if(BG_CLOSED){
                     BG_CLOSED = false;
                   //  initiateTimers();
+                    AsyncTaskTools.execute(timerTask);
                 }
                 //we want
                 if(debug) {
@@ -528,16 +510,16 @@ private SensorManager mSensorManager;
     }
 
     private void onWon(){
-        //for (TimerAsyncTask timerAsyncTask : tasks){
-            tasks.cancel(true);
+        //for (TimerAsyncTask timerAsyncTask : timerTask){
+            timerTask.cancel(true);
         //}
         startActivity(new Intent(this, VictoryActivity.class));
         finish();
     }
 
     private void onDefeat() {
-       // for (TimerAsyncTask timerAsyncTask : tasks){
-         tasks.cancel(true);
+       // for (TimerAsyncTask timerAsyncTask : timerTask){
+         timerTask.cancel(true);
         //}
         startActivity(new Intent(this, LosingScreen.class));
         finish();
@@ -549,7 +531,7 @@ private SensorManager mSensorManager;
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        tasks.cancel(true);
+        timerTask.cancel(true);
     }
 }
 
