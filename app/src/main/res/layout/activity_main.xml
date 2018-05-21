@@ -152,7 +152,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Hur man spelar"
+                android:text="Instruktioner"
                 android:textColor="#fff"
                 android:textSize="18sp"
                 android:textStyle="bold" />

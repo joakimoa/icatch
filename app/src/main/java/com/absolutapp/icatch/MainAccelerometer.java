@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -30,9 +31,14 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
     public Vibrator v;
 
 
+
+    private Bundle savedInstanceState;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.savedInstanceState = savedInstanceState;
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.accelerometer_example_main);
         imageview2 = findViewById(R.id.imageView2);
         imageview2.setImageResource(imageArray[10]);
@@ -59,8 +65,6 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
                     pillcount--;
                     if (pillcount <= 0){
                         cleared = true;
-                        Intent soundServiceIntent = new Intent(getApplicationContext(), VictoryService.class);
-                        startService(soundServiceIntent);
                         Toast.makeText(getBaseContext(), "Grattis! Zon botad",
                                 Toast.LENGTH_LONG).show();
                         exitApp();
@@ -119,12 +123,12 @@ public class MainAccelerometer extends Activity implements AccelerometerListener
 
     private void stopSounds() {
         stopService(new Intent(MainAccelerometer.this, SoundService.class));
-        stopService(new Intent(MainAccelerometer.this, VictoryService.class));
     }
 
+
     private void exitApp() {
-                    Toast.makeText(getBaseContext(), "Return",
-                            Toast.LENGTH_SHORT).show();
-                    
+        setResult(Activity.RESULT_OK);
+        GameActivity.GAME_WON = true;
+        finishAfterTransition();
     }
 }

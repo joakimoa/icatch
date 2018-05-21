@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.absolutapp.icatch">
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_GPS" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-feature android:name="android.hardware.location.gps" />
 
+    <uses-feature android:name="android.hardware.location.gps" />
 
     <application
         android:allowBackup="true"
@@ -18,9 +19,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
-
-        </activity>
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
 
         <service
             android:name=".MusicService"
@@ -31,6 +32,9 @@
         <service
             android:name=".VictoryService"
             android:enabled="true" />
+        <service
+            android:name=".FailureService"
+            android:enabled="true" />
 
         <meta-data
             android:name="preloaded_fonts"
@@ -39,7 +43,9 @@
         <activity
             android:name=".InstructionsActivity"
             android:label="@string/title_activity_instructions"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -49,18 +55,32 @@
         <activity
             android:name=".BackstoryActivity"
             android:label="@string/title_activity_backstory"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
         <activity
             android:name=".GameActivity"
-            android:label="@string/title_activity_game">
-        </activity>
-        <activity android:name=".StoryDialog"
-            android:theme="@style/AppTheme.customTheme">
-        </activity>
+            android:label="@string/title_activity_game"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden" />
+        <activity
+            android:name=".StoryDialog"
+            android:theme="@style/AppTheme.customTheme"
+            />
         <activity
             android:name=".MainAccelerometer"
-            android:label="MainAccelerometer" >
-        </activity>
+            android:label="MainAccelerometer"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden" />
+        <activity
+            android:name=".LosingScreen"
+            android:label="LosingScreen"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden" />
+        <activity
+            android:name=".VictoryActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
     </application>
 
 </manifest>

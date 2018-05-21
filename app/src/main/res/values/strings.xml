@@ -3,9 +3,9 @@
     <string name="title_activity_instructions">iCatch</string>
     <string name="title_activity_backstory">BackstoryActivity</string>
     <string name="title_activity_game">GameActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_zone1">Zon 1</string>
+    <string name="title_zone2">Zon 2</string>
+    <string name="title_zone3">Zon 3</string>
 
 
     <!-- slide 1 title and descr -->
@@ -33,8 +33,12 @@
         En student från datateknik blev biten i handen av en KTH:are på besök, och lundensaren blev smittad av ett icke identifierbart virus genom bettet.
         Viruset har fortsatt sprida sig och flertalet människor rapporteras genomgå personlighetsförändringar.
         Detta har nu resulterat i att ett gäng rabiata datateknikstudenter har gått bärsärkagång i Botaniska Trädgården och förstört flera vackra växter.
-        KTH-viruset verkar sprida sig som en löpeld och hela Lunds vegetation står på spel. Det är upp till dig att rädda dagen... </string>
+        KTH-viruset verkar sprida sig som en löpeld och hela Lunds vegetation står på spel. Det är upp till dig att rädda dagen. . . </string>
     <string name="my_preference">"com.abc.com.MyPref</string>
     <string name="my_preference_key">"com.abc.com.MyPrefKey</string>
+
+    <string name="title_activity_losing_screen">LosingScreen</string>
+    <string name="return_button">Tillbaka till huvudmenyn</string>
+
 
 </resources>
