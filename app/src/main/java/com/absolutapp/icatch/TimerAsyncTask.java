@@ -30,6 +30,7 @@ public class TimerAsyncTask extends AsyncTask<Void, Integer, String> {
             SystemClock.sleep(1000);
             count++;
             publishProgress(count);
+            this.gameActivity.tick();
         }
         return "Complete";
     }
