@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private CardView h2p, playBtn;
     private Switch diffSwitch;
     public static boolean HARD_DIFFICULTY;
+    private Intent musicServiceIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         h2p.setOnClickListener(this);
         playBtn.setOnClickListener(this);
         diffSwitch = findViewById(R.id.difficultySwitch);
-        Intent musicServiceIntent = new Intent(getApplicationContext(), MusicService.class);
+        musicServiceIntent = new Intent(getApplicationContext(), MusicService.class);
         startService(musicServiceIntent);
 
         /**
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     public void startGame(View v)
     {
+        stopService(new Intent(MainActivity.this, MusicService.class));
         startActivity(new Intent(this, GameActivity.class));
     }
 

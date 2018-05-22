@@ -532,6 +532,7 @@ private SensorManager mSensorManager;
     public void onBackPressed() {
         super.onBackPressed();
         timerTask.cancel(true);
+        startService(new Intent(this, MusicService.class));
     }
 }
 
