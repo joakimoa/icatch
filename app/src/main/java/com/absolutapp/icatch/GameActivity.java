@@ -452,11 +452,11 @@ private SensorManager mSensorManager;
 
         mAzimuth = Math.round(mAzimuth);
         if(GPSset) {
-            setNorth(-mAzimuth);
+            setNorth(-mAzimuth%360);
 
-            float dir = (currentDir+360)%360;
+            float dir = (currentDir+360*2)%360;
 
-          //  Log.d("CurrentDir", "onSensorChanged: " + currentDir);
+           Log.d("CurrentDir", "onSensorChanged: " + dir);
             if(dir > 30 && dir < 330){
                 if(vibrator.hasVibrator()){
                     if(ticktock != lastTick) {
