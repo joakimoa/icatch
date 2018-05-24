@@ -147,7 +147,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         if (MainActivity.HARD_DIFFICULTY) {
             timerSeconds =  5;
         } else {
-            timerSeconds = 20;
+            timerSeconds = 100;
         }
 
         // loading bars and their AsyncTask (timerTask)
